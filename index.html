@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -35,6 +35,8 @@
         width: 100%;
         height: 100%;
         background: linear-gradient(to bottom, #020107 0%, #201b46 100%);
+        /* transform: rotate(180deg); */
+        animation: reverse 10s linear infinite;
       }
       .container .text {
         color: #fff;
@@ -619,7 +621,7 @@
           638px 849px #fff, 77px 335px #fff, 1127px 1128px #fff,
           1314px 2196px #fff, 1800px 1626px #fff, 570px 2184px #fff,
           1117px 2193px #fff, 2033px 2476px #fff;
-        animation: animStar 100s linear infinite;
+        /* animation: animStar 100s linear infinite; */
       }
       .stars:after {
         content: " ";
@@ -1434,7 +1436,7 @@
           2125px 2218px #fff, 2075px 2252px #fff, 1948px 2496px #fff,
           991px 969px #fff, 2355px 2313px #fff, 2062px 1779px #fff,
           329px 1084px #fff;
-        animation: animStar 125s linear infinite;
+        /* animation: animStar 125s linear infinite; */
       }
       .stars1:after {
         content: " ";
@@ -1840,7 +1842,7 @@
         position: absolute;
         bottom: 0;
         right: 0;
-        background: linear-gradient(to top, rgba(255, 255, 255, 0), white);
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0), white);
         animation: animShootingStar 10s linear infinite;
       }
 
@@ -1854,16 +1856,184 @@
       }
       @keyframes animShootingStar {
         from {
-          transform: translateY(0px) translateX(0px) rotate(-45deg);
+          transform: translateY(0px) translateX(1560px) rotate(45deg);
           opacity: 1;
           height: 5px;
         }
         to {
-          transform: translateY(-2560px) translateX(-2560px) rotate(-45deg);
+          transform: translateY(-0px) translateX(-0px) rotate(45deg);
           opacity: 1;
           height: 800px;
         }
       }
     </style>
   </body>
+</html> -->
+
+"<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grok Background - Clone 99%</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body,
+      html {
+        height: 100%;
+        overflow: hidden;
+        background: #000;
+        font-family: system-ui, sans-serif;
+      }
+
+      canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1;
+      }
+
+      .content {
+        position: relative;
+        z-index: 10;
+        color: white;
+        padding: 2rem;
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+        padding-top: 10vh;
+      }
+      h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+      }
+      p {
+        opacity: 0.8;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="bg"></canvas>
+
+    <div class="content">
+      <h1>Grok Universe Background</h1>
+      <p>Hiệu ứng giống hệt grok.x.ai – 100% code, không hình ảnh</p>
+    </div>
+
+    <script>
+      const canvas = document.getElementById("bg");
+      const ctx = canvas.getContext("2d");
+
+      let w, h, particles, stars;
+
+      function init() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+
+        // 120 hạt bụi
+        particles = Array.from({ length: 120 }, () => ({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          size: Math.random() * 1.5 + 0.5,
+          speedX: Math.random() * 0.05 - 0.25,
+          speedY: Math.random() * 0.03 + 0.1,
+          opacity: Math.random() * 0.5 + 0.3,
+          twinkle: Math.random() * 0.02,
+        }));
+
+        stars = [];
+      }
+
+      // Tạo sao băng ngẫu nhiên
+      function createShootingStar() {
+        if (Math.random() < 0.02) {
+          // ~1 sao mỗi 2-3 giây
+          stars.push({
+            x: Math.random() * w,
+            y: Math.random() * h * 0.4,
+            length: Math.random() * 150 + 100,
+            speed: Math.random() * 0.1 + 5,
+            angle: Math.PI / 4 + (Math.random() - 0.5) * 0.3,
+            opacity: 1,
+            fade: 0,
+          });
+        }
+      }
+
+      function draw() {
+        ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
+        ctx.fillRect(0, 0, w, h);
+
+        // Nền gradient vũ trụ (giống Grok)
+        const grad = ctx.createRadialGradient(w / 2, h, 0, w / 2, h, h);
+        grad.addColorStop(0, "#0b1a2d");
+        grad.addColorStop(1, "#000000");
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, w, h);
+
+        // Vẽ hạt bụi
+        particles.forEach((p) => {
+          p.x += p.speedX;
+          p.y += p.speedY;
+          p.opacity += p.twinkle;
+          if (p.opacity > 1 || p.opacity < 0.3) p.twinkle *= -1;
+
+          if (p.x < 0 || p.x > w) p.speedX *= -1;
+          if (p.y > h) p.y = -10;
+
+          ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fill();
+        });
+
+        // Vẽ sao băng
+        stars.forEach((s, i) => {
+          s.fade += 0.0003;
+          s.opacity = Math.max(0, 1 - s.fade);
+          s.x += Math.cos(s.angle) * s.speed;
+          s.y += Math.sin(s.angle) * s.speed;
+
+          const gradient = ctx.createLinearGradient(
+            s.x,
+            s.y,
+            s.x - Math.cos(s.angle) * s.length,
+            s.y - Math.sin(s.angle) * s.length
+          );
+          gradient.addColorStop(0, `rgba(255, 255, 255, ${s.opacity})`);
+          gradient.addColorStop(1, "rgba(100, 200, 255, 0)");
+
+          ctx.strokeStyle = gradient;
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(s.x, s.y);
+          ctx.lineTo(
+            s.x - Math.cos(s.angle) * s.length,
+            s.y - Math.sin(s.angle) * s.length
+          );
+          ctx.stroke();
+
+          // Xóa sao băng đã bay xong
+          if (s.opacity === 0 || s.x > w || s.y > h) stars.splice(i, 1);
+        });
+
+        createShootingStar();
+        requestAnimationFrame(draw);
+      }
+
+      // Resize
+      window.addEventListener("resize", () => {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      });
+
+      init();
+      draw();
+    </script>
+  </body>
 </html>
+"
